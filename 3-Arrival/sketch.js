@@ -1,4 +1,4 @@
-let nbVehicules = 1;
+let nbVehicules = 20;
 let target;
 let vehicle;
 let vehicles = [];
@@ -24,6 +24,9 @@ function setup() {
     vehicles.push(new Vehicle(random(width), random(height)));
   }
 
+  // Texte qu'on affiche avec textToPoint
+  // Get the point array.
+  let points = font.textToPoints('Hello', 6, 50, 55, { sampleFactor:  0.5 });
 
 }
 
@@ -46,12 +49,23 @@ function draw() {
   pop();
 
   vehicles.forEach((vehicle, index) => {
-    // si on a affaire au premier véhicule
+     // si on a affaire au premier véhicule
     // alors il suit la souris (target)
     let steeringForce;
 
+    if (index === 0) {
+      // le premier véhicule suit la souris avec arrivée
+          steeringForce = vehicle.arrive(target);
+    } else {
+      // Je suis un suiveur, je poursuis le véhicule 
+      // précédent avec arrivée
+      let vehiculePrecedent = vehicles[index - 1];
+      steeringForce = vehicle.arrive(vehiculePrecedent.pos, 30);
+    }
 
-    steeringForce = vehicle.arrive(target);
+   
+
+
 
     vehicle.applyForce(steeringForce);
     vehicle.update();

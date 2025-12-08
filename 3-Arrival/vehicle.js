@@ -8,7 +8,7 @@ class Vehicle {
     this.maxSpeed = 10;
     this.maxForce = 0.6;
     this.r = 16;
-    this.rayonZoneDeFreinage = 400;
+    this.rayonZoneDeFreinage = 100;
   }
 
   evade(vehicle) {
@@ -27,18 +27,18 @@ class Vehicle {
     return this.seek(target);
   }
 
-  arrive(target) {
+  arrive(target, d=0) {
     // 2nd argument true enables the arrival behavior
     // 3rd argument d is the distance behind the target
     // for "snake" behavior
-    return this.seek(target, true);
+    return this.seek(target, true, d);
   }
 
   flee(target) {
     // recopier code de flee de l'exemple précédent
   }
 
-  seek(target, arrival = false) {
+  seek(target, arrival = false, d=0) {
     let valueDesiredSpeed = this.maxSpeed;
 
     if (arrival) {
@@ -69,7 +69,7 @@ class Vehicle {
       // si d = rayon alors desiredSpeed = maxSpeed
       // si d = 0 alors desiredSpeed = 0
       if (distance < this.rayonZoneDeFreinage) {
-        valueDesiredSpeed = map(distance, 0, this.rayonZoneDeFreinage, 0, this.maxSpeed);
+        valueDesiredSpeed = map(distance, d, this.rayonZoneDeFreinage, 0, this.maxSpeed);
       }
     }
 
@@ -104,7 +104,9 @@ class Vehicle {
     strokeWeight(2);
     push();
     translate(this.pos.x, this.pos.y);
-    rotate(this.vel.heading());
+    if(this.vel.mag() > 0)
+      rotate(this.vel.heading());
+
     triangle(-this.r, -this.r / 2, -this.r, this.r / 2, this.r, 0);
     pop();
   }
