@@ -28,6 +28,7 @@ function draw() {
   // pursuer = le véhicule poursuiveur, il vise un point devant la cible
   target = targets[0];
 
+  //let force = pursuer.pursuePerfect(target);
   let force = pursuer.pursue(target);
   pursuer.applyForce(force);
 
@@ -41,6 +42,12 @@ function draw() {
   targets.forEach(target => {
     // lorsque la target atteint un bord du canvas elle ré-apparait de l'autre côté
     target.edges();
+
+    // TODO : si le poursuiveur est à moins de target.rayonDetection
+    // alors la target s'évade (evade = fuite avec prédiction) du
+    // poursuiveur
+
+    
     // mettre en commentaire la ligne suivante
     // si cible controlée à la souris
     target.update();
